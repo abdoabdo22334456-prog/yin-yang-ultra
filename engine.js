@@ -3,6 +3,10 @@ export const FORMATION = 9.0;
 export const EXPLODE_TIME = 13.5;
 export const DURATION = 24.0; // زمن الدورة الكونية الكاملة من الولادة إلى الانفجار ثم التجمع
 export const DT = 1 / 120;
+// الانقلاب: الغلوّ المستمر يتحول ببطء إلى نقيضه بدل أن ينفجر
+export const REVERSAL_RATIO = 0.55;     // نسبة |ين - يانغ| / المجموع التي يبدأ عندها التراكم
+export const REVERSAL_HOLD_SECONDS = 8; // مدة بقاء الاختلال قبل أن يبدأ الانقلاب
+export const REVERSAL_SECONDS = 6;      // زمن تبادل الين واليانغ لمكانيهما
 
 export const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 export const smooth = v => {
@@ -139,15 +143,41 @@ export function createSandboxState() {
     angle: 0,
     ruptured: false,
     ruptureAge: 0,
-    justRuptured: false
+    justRuptured: false,
+    reversing: false,
+    reversal: 0,
+    revFrom: null,
+    reversalHold: 0
   };
 }
 
 export function updateSandboxPhysics(state, dt) {
   state.justRuptured = false;
 
-  // قانون التناغم الذاتي (إذا تم تفعيل التوازن التلقائي)
-  if (state.autoHarmonize) {
+  // المستخدم غيّر الهدف أثناء الانقلاب: يُلغى الانقلاب ويتبع الهدف الجديد
+  if (state.reversing && (state.targetYin !== state.yin || state.targetYang !== state.yang)) {
+    state.reversing = false;
+    state.reversal = 0;
+    state.revFrom = null;
+    state.reversalHold = 0;
+  }
+
+  if (state.reversing) {
+    // الين واليانغ يتبادلان مكانيهما بمنحنى سلس
+    state.reversal = Math.min(1, state.reversal + dt / REVERSAL_SECONDS);
+    const k = smooth(state.reversal);
+    state.yin = state.revFrom.yin + (state.revFrom.yang - state.revFrom.yin) * k;
+    state.yang = state.revFrom.yang + (state.revFrom.yin - state.revFrom.yang) * k;
+    state.targetYin = state.yin;
+    state.targetYang = state.yang;
+    if (state.reversal >= 1) {
+      state.reversing = false;
+      state.reversal = 0;
+      state.revFrom = null;
+      state.reversalHold = 0;
+    }
+  } else if (state.autoHarmonize) {
+    // قانون التناغم الذاتي (إذا تم تفعيل التوازن التلقائي)
     const avg = (state.yin + state.yang) / 2;
     state.yin += (avg - state.yin) * Math.min(1, dt * 2.2);
     state.yang += (avg - state.yang) * Math.min(1, dt * 2.2);
@@ -181,9 +211,13 @@ export function updateSandboxPhysics(state, dt) {
   const speed = baseSpeed * Math.max(0.04, 1.0 - strain * 0.55);
   state.angle += dt * 7.3 * speed;
 
-  // قانون الانفجار والتمزق الحرج (عند بلوغ الإجهاد 95% فما فوق)
-  if (strain >= 0.95) {
+  // الانفجار للحمولة الزائدة فقط؛ الاختلال وحده ينتهي بالانقلاب لا بالانفجار
+  if (overloadStrain >= 0.8) {
     if (!state.ruptured) {
+      state.reversing = false;
+      state.reversal = 0;
+      state.revFrom = null;
+      state.reversalHold = 0;
       state.ruptured = true;
       state.ruptureAge = 0;
       state.justRuptured = true;
@@ -193,12 +227,28 @@ export function updateSandboxPhysics(state, dt) {
   } else {
     // إذا أعاد المستخدم خفض الإجهاد تحت 75%، يبدأ الالتئام التلقائي
     if (state.ruptured) {
-      if (strain < 0.75) {
+      if (overloadStrain < 0.5) {
         state.ruptured = false;
         state.ruptureAge = 0;
       } else {
         state.ruptureAge += dt;
       }
+    }
+  }
+
+  // الاختلال المستمر يبدأ الانقلاب بعد مدة من البقاء عند الحد
+  if (!state.reversing && !state.ruptured) {
+    if (ratio >= REVERSAL_RATIO) {
+      state.reversalHold += dt;
+      if (state.reversalHold >= REVERSAL_HOLD_SECONDS) {
+        state.reversing = true;
+        state.reversal = 0;
+        state.revFrom = { yin: state.yin, yang: state.yang };
+        state.targetYin = state.yin;
+        state.targetYang = state.yang;
+      }
+    } else {
+      state.reversalHold = Math.max(0, state.reversalHold - dt * 2);
     }
   }
 
@@ -219,6 +269,7 @@ export function updateSandboxPhysics(state, dt) {
     ruptured: state.ruptured,
     ruptureAge: state.ruptureAge,
     justRuptured: state.justRuptured,
+    reversal: state.reversing ? smooth(state.reversal) : 0,
     broken: state.ruptured ? state.ruptureAge : null
   };
 }

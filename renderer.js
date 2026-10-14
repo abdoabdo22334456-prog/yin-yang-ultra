@@ -23,7 +23,7 @@ function getStars(count = 200) {
       r: Math.random() * 1.6 + 0.3,
       alpha: Math.random() * 0.7 + 0.3,
       twinkleSpeed: Math.random() * 2 + 1,
-      color: ['#ffffff', '#a8d8ff', '#ffd4a3', '#e0c3fc'][Math.floor(Math.random() * 4)]
+      color: ['#ece6d8', '#d9cfb8', '#ffd4a3', '#c9b58a'][Math.floor(Math.random() * 4)]
     });
   }
   return stars;
@@ -45,8 +45,8 @@ function glowDisk(ctx, x, y, r, type, alpha = 1, glowIntensity = 1) {
   ctx.globalAlpha = Math.max(0, Math.min(1, ctx.globalAlpha * alpha));
 
   const isYin = type === 'yin';
-  const mainColor = isYin ? '#0d0d14' : '#ffffff';
-  const glowColor = isYin ? 'rgba(138, 75, 255, ' : 'rgba(255, 215, 115, ';
+  const mainColor = isYin ? '#14110f' : '#ffffff';
+  const glowColor = isYin ? 'rgba(150, 120, 70, ' : 'rgba(255, 215, 115, ';
 
   if (glowIntensity > 0) {
     const grad = ctx.createRadialGradient(x, y, 0, x, y, r * (2.8 + glowIntensity * 1.5));
@@ -64,7 +64,7 @@ function glowDisk(ctx, x, y, r, type, alpha = 1, glowIntensity = 1) {
   ctx.fillStyle = mainColor;
   ctx.fill();
 
-  ctx.strokeStyle = isYin ? 'rgba(180, 120, 255, 0.7)' : 'rgba(255, 255, 255, 0.9)';
+  ctx.strokeStyle = isYin ? 'rgba(184, 151, 90, 0.7)' : 'rgba(255, 255, 255, 0.9)';
   ctx.lineWidth = 0.5;
   ctx.stroke();
 
@@ -74,7 +74,7 @@ function glowDisk(ctx, x, y, r, type, alpha = 1, glowIntensity = 1) {
 function radiantTrail(ctx, position, t, type, life = 0.16, width = 1.2, alpha = 0.35) {
   ctx.save();
   const isYin = type === 'yin';
-  const strokeColor = isYin ? '147, 85, 255' : '255, 235, 160';
+  const strokeColor = isYin ? '150, 120, 70' : '255, 235, 160';
   ctx.lineWidth = width;
   ctx.lineCap = 'round';
 
@@ -110,8 +110,8 @@ function drawCosmicBackdrop(ctx, time, energyInEnv = 0) {
 
   const nebRadius = 260 + cosmicGlowBoost * 70;
   const nebGrad = ctx.createRadialGradient(0, 0, 40, 0, 0, nebRadius);
-  nebGrad.addColorStop(0, `rgba(90, 45, 150, ${0.08 + cosmicGlowBoost * 0.12})`);
-  nebGrad.addColorStop(0.5, `rgba(25, 75, 130, ${0.05 + cosmicGlowBoost * 0.08})`);
+  nebGrad.addColorStop(0, `rgba(110, 85, 50, ${0.08 + cosmicGlowBoost * 0.12})`);
+  nebGrad.addColorStop(0.5, `rgba(60, 50, 35, ${0.05 + cosmicGlowBoost * 0.08})`);
   nebGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = nebGrad;
   ctx.beginPath();
@@ -119,7 +119,7 @@ function drawCosmicBackdrop(ctx, time, energyInEnv = 0) {
   ctx.fill();
 
   ctx.save();
-  ctx.strokeStyle = `rgba(140, 160, 190, ${0.12 + cosmicGlowBoost * 0.12})`;
+  ctx.strokeStyle = `rgba(184, 151, 90, ${0.12 + cosmicGlowBoost * 0.12})`;
   ctx.lineWidth = 0.6;
 
   for (const r of [85, 120, 162]) {
@@ -130,7 +130,7 @@ function drawCosmicBackdrop(ctx, time, energyInEnv = 0) {
 
   const rot = time * 0.04;
   ctx.rotate(rot);
-  ctx.strokeStyle = `rgba(150, 180, 220, ${0.22 + cosmicGlowBoost * 0.15})`;
+  ctx.strokeStyle = `rgba(184, 151, 90, ${0.22 + cosmicGlowBoost * 0.15})`;
   for (let i = 0; i < 72; i++) {
     const a = (i / 72) * TAU;
     const isMajor = i % 6 === 0;
@@ -143,7 +143,7 @@ function drawCosmicBackdrop(ctx, time, energyInEnv = 0) {
     ctx.stroke();
   }
 
-  ctx.fillStyle = `rgba(180, 210, 255, ${0.35 + cosmicGlowBoost * 0.25})`;
+  ctx.fillStyle = `rgba(236, 230, 216, ${0.35 + cosmicGlowBoost * 0.25})`;
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * TAU;
     ctx.beginPath();
@@ -162,15 +162,15 @@ function drawBirth(ctx, t, reduced) {
   const shapes = [lobePoints(t, 0), lobePoints(t, 1)];
   for (let side = 0; side < 2; side++) {
     ctx.save();
-    ctx.shadowColor = side ? 'rgba(255, 230, 160, 0.4)' : 'rgba(130, 60, 240, 0.5)';
+    ctx.shadowColor = side ? 'rgba(255, 230, 160, 0.4)' : 'rgba(120, 95, 60, 0.5)';
     ctx.shadowBlur = 18;
     path(ctx, shapes[side]);
-    ctx.fillStyle = side ? '#ffffff' : '#080811';
+    ctx.fillStyle = side ? '#ffffff' : '#14110f';
     ctx.fill();
     ctx.restore();
 
     path(ctx, shapes[side]);
-    ctx.strokeStyle = side ? 'rgba(255, 255, 255, 0.8)' : 'rgba(150, 100, 255, 0.6)';
+    ctx.strokeStyle = side ? 'rgba(255, 255, 255, 0.8)' : 'rgba(184, 151, 90, 0.6)';
     ctx.lineWidth = 0.8;
     ctx.stroke();
   }
@@ -182,7 +182,7 @@ function drawBirth(ctx, t, reduced) {
 
     const pulse = (t * 2 + side * Math.PI) % 2;
     ctx.save();
-    ctx.strokeStyle = side ? 'rgba(160, 90, 255, ' + (1 - pulse / 2) * 0.4 + ')' : 'rgba(255, 220, 140, ' + (1 - pulse / 2) * 0.5 + ')';
+    ctx.strokeStyle = side ? 'rgba(150, 120, 70, ' + (1 - pulse / 2) * 0.4 + ')' : 'rgba(255, 220, 140, ' + (1 - pulse / 2) * 0.5 + ')';
     ctx.lineWidth = 0.8;
     ctx.beginPath();
     ctx.arc(seed.x, seed.y, seed.r + pulse * 6, 0, TAU);
@@ -254,14 +254,14 @@ function drawBody(ctx, f, t, model, reduced, width, height) {
 
       ctx.save();
       ctx.globalAlpha = lobe.bodyAlpha;
-      ctx.shadowColor = side ? 'rgba(255, 230, 160, 0.6)' : 'rgba(150, 80, 255, 0.7)';
+      ctx.shadowColor = side ? 'rgba(255, 230, 160, 0.6)' : 'rgba(150, 120, 70, 0.7)';
       ctx.shadowBlur = 24 * (1 - lobe.unmerge);
 
       path(ctx, lobe.points);
-      ctx.fillStyle = side ? '#ffffff' : '#080812';
+      ctx.fillStyle = side ? '#ffffff' : '#14110f';
       ctx.fill();
 
-      ctx.strokeStyle = side ? 'rgba(255, 255, 255, 0.8)' : 'rgba(180, 120, 255, 0.7)';
+      ctx.strokeStyle = side ? 'rgba(255, 255, 255, 0.8)' : 'rgba(184, 151, 90, 0.7)';
       ctx.lineWidth = 0.9;
       ctx.stroke();
 
@@ -279,7 +279,7 @@ function drawBody(ctx, f, t, model, reduced, width, height) {
   const rBase = radiusOf(f);
   const haloGrad = ctx.createRadialGradient(0, 0, rBase * 0.8, 0, 0, rBase * 1.7);
   haloGrad.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
-  haloGrad.addColorStop(0.4, strain > 0.5 ? 'rgba(255, 90, 70, 0.25)' : 'rgba(140, 110, 255, 0.2)');
+  haloGrad.addColorStop(0.4, strain > 0.5 ? 'rgba(166, 61, 47, 0.28)' : 'rgba(184, 151, 90, 0.18)');
   haloGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = haloGrad;
   ctx.beginPath();
@@ -299,17 +299,17 @@ function drawBody(ctx, f, t, model, reduced, width, height) {
 
   // 1. نصف اليانج (الخلفية البيضاء المضيئة)
   const whiteGrad = ctx.createRadialGradient(-shift, r * 0.35, r * 0.1, 0, 0, r * 1.3);
-  whiteGrad.addColorStop(0, '#ffffff');
-  whiteGrad.addColorStop(0.75, '#f4f6fa');
-  whiteGrad.addColorStop(1, '#e3e8f4');
+  whiteGrad.addColorStop(0, '#f7f2e6');
+  whiteGrad.addColorStop(0.75, '#f1ecdf');
+  whiteGrad.addColorStop(1, '#ddd4c0');
   ctx.fillStyle = whiteGrad;
   ctx.fillRect(-r * 1.5, -r * 1.5, r * 3, r * 3);
 
   // 2. نصف الين (الكتلة المظلمة مع المنحنى الانسيابي)
   const darkGrad = ctx.createRadialGradient(shift, -r * 0.4, r * 0.1, shift, 0, r * 1.4);
-  darkGrad.addColorStop(0, '#040409');
-  darkGrad.addColorStop(0.7, '#0b0a17');
-  darkGrad.addColorStop(1, '#1a142e');
+  darkGrad.addColorStop(0, '#0e0c0a');
+  darkGrad.addColorStop(0.7, '#14110f');
+  darkGrad.addColorStop(1, '#221c16');
 
   ctx.fillStyle = darkGrad;
   ctx.beginPath();
@@ -330,7 +330,7 @@ function drawBody(ctx, f, t, model, reduced, width, height) {
 
   ctx.restore();
 
-  ctx.strokeStyle = strain > 0.7 ? 'rgba(255, 70, 70, 0.9)' : 'rgba(220, 230, 255, 0.8)';
+  ctx.strokeStyle = strain > 0.7 ? 'rgba(166, 61, 47, 0.9)' : 'rgba(236, 230, 216, 0.8)';
   ctx.lineWidth = 1.0 + strain * 1.5;
   ctx.beginPath();
   ctx.arc(0, 0, r, 0, TAU);
@@ -343,15 +343,15 @@ export function drawMouseInteraction(ctx, mouse) {
   if (!mouse || !mouse.active) return;
   ctx.save();
   const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 45);
-  grad.addColorStop(0, 'rgba(120, 210, 255, 0.6)');
-  grad.addColorStop(0.4, 'rgba(90, 130, 255, 0.2)');
+  grad.addColorStop(0, 'rgba(184, 151, 90, 0.6)');
+  grad.addColorStop(0.4, 'rgba(150, 120, 70, 0.2)');
   grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.arc(mouse.x, mouse.y, 45, 0, TAU);
   ctx.fill();
 
-  ctx.strokeStyle = 'rgba(180, 230, 255, 0.7)';
+  ctx.strokeStyle = 'rgba(236, 230, 216, 0.7)';
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.arc(mouse.x, mouse.y, 8, 0, TAU);
@@ -361,7 +361,7 @@ export function drawMouseInteraction(ctx, mouse) {
 
 export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700, dpr = 1, reduced = false, mouse = null, isSandbox = false } = {}) {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.fillStyle = '#05070f';
+  ctx.fillStyle = '#0b0a09';
   ctx.fillRect(0, 0, width, height);
 
   const scale = Math.min(width / 440, height / 370);
@@ -398,7 +398,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
           ctx.save();
           ctx.strokeStyle = w === 0 
             ? `rgba(255, 230, 200, ${0.9 * shockFade})`
-            : (w === 1 ? `rgba(255, 130, 60, ${0.75 * shockFade})` : `rgba(180, 80, 255, ${0.65 * shockFade})`);
+            : (w === 1 ? `rgba(255, 130, 60, ${0.75 * shockFade})` : `rgba(150, 120, 70, ${0.65 * shockFade})`);
           ctx.lineWidth = Math.max(0.8, (4.2 - w * 1.1) * shockFade);
           ctx.beginPath();
           ctx.arc(0, 0, shockR, 0, TAU);
@@ -428,7 +428,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
         }
         const boltAlpha = Math.max(0, (0.55 + 0.45 * Math.sin(time * 42 + b * 9)) * Math.max(0, 1 - f.ruptureAge / 3.8));
         if (boltAlpha > 0.02) {
-          ctx.strokeStyle = (b % 2 === 0) ? `rgba(215, 238, 255, ${boltAlpha})` : `rgba(255, 195, 120, ${boltAlpha})`;
+          ctx.strokeStyle = (b % 2 === 0) ? `rgba(236, 230, 216, ${boltAlpha})` : `rgba(255, 195, 120, ${boltAlpha})`;
           ctx.lineWidth = 1.3;
           ctx.stroke();
         }
@@ -453,7 +453,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
           const prevX = Math.cos(curA - spiral * 0.06) * prevDist;
           const prevY = Math.sin(curA - spiral * 0.06) * prevDist;
           ctx.save();
-          ctx.strokeStyle = side ? `rgba(255, 215, 130, ${pAlpha * 0.75})` : `rgba(180, 100, 255, ${pAlpha * 0.75})`;
+          ctx.strokeStyle = side ? `rgba(255, 215, 130, ${pAlpha * 0.75})` : `rgba(150, 120, 70, ${pAlpha * 0.75})`;
           ctx.lineWidth = 1.2 + (i % 3) * 0.5;
           ctx.beginPath();
           ctx.moveTo(prevX, prevY);
@@ -478,9 +478,9 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
       const auraGrad = ctx.createRadialGradient(0, 0, auraInnerR, 0, 0, Math.max(auraInnerR + 1, auraR));
       if (strain < 0.35) {
         const a = 0.22 + 0.08 * breathPulse;
-        auraGrad.addColorStop(0, `rgba(150, 130, 255, ${a})`);
-        auraGrad.addColorStop(0.45, `rgba(75, 145, 255, ${a * 0.55})`);
-        auraGrad.addColorStop(1, 'rgba(10, 5, 30, 0)');
+        auraGrad.addColorStop(0, `rgba(184, 151, 90, ${a})`);
+        auraGrad.addColorStop(0.45, `rgba(120, 95, 60, ${a * 0.55})`);
+        auraGrad.addColorStop(1, 'rgba(20, 15, 8, 0)');
       } else if (strain < 0.75) {
         const a = 0.32 + 0.14 * breathPulse;
         auraGrad.addColorStop(0, `rgba(255, 185, 65, ${a})`);
@@ -488,8 +488,8 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
         auraGrad.addColorStop(1, 'rgba(60, 15, 0, 0)');
       } else {
         const a = 0.48 + 0.22 * breathPulse;
-        auraGrad.addColorStop(0, `rgba(255, 50, 40, ${a})`);
-        auraGrad.addColorStop(0.45, `rgba(220, 20, 70, ${a * 0.65})`);
+        auraGrad.addColorStop(0, `rgba(166, 61, 47, ${a})`);
+        auraGrad.addColorStop(0.45, `rgba(140, 40, 35, ${a * 0.65})`);
         auraGrad.addColorStop(1, 'rgba(80, 0, 10, 0)');
       }
       ctx.save();
@@ -504,9 +504,9 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
       let ringR, ringG, ringB;
       if (strain < 0.5) {
         const tC = strain / 0.5;
-        ringR = Math.round(125 + (255 - 125) * tC);
-        ringG = Math.round(115 + (195 - 115) * tC);
-        ringB = Math.round(255 + (60 - 255) * tC);
+        ringR = Math.round(184 + (255 - 184) * tC);
+        ringG = Math.round(151 + (195 - 151) * tC);
+        ringB = Math.round(90 + (60 - 90) * tC);
       } else {
         const tC = (strain - 0.5) / 0.5;
         ringR = 255;
@@ -573,7 +573,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
         // رسم ذيل الجزيء (3-4 trail segments)
         if (!reduced) {
           const trailSegs = 4;
-          const trailColor = (type === 'yin') ? '148, 92, 255' : '255, 226, 132';
+          const trailColor = (type === 'yin') ? '150, 120, 70' : '255, 226, 132';
           for (let s = 1; s <= trailSegs; s++) {
             const lagAngle = baseAngle - s * 0.055 * (tierSpeedRatio * 0.8 + 0.2);
             const lagR = currentR - s * (isLeaker ? 1.4 : 0.35);
@@ -638,9 +638,9 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
         if (strain > 0.5) {
           flowGrad.addColorStop(0.5, `rgba(255, 75, 65, ${0.62 + strain * 0.32})`);
         } else {
-          flowGrad.addColorStop(0.5, `rgba(162, 142, 255, ${0.42 + (1 - strain) * 0.28})`);
+          flowGrad.addColorStop(0.5, `rgba(236, 230, 216, ${0.42 + (1 - strain) * 0.28})`);
         }
-        flowGrad.addColorStop(1, `rgba(142, 85, 255, ${0.46 + (1 - strain) * 0.34})`);
+        flowGrad.addColorStop(1, `rgba(150, 120, 70, ${0.46 + (1 - strain) * 0.34})`);
 
         ctx.strokeStyle = flowGrad;
         ctx.lineWidth = 1.0 + (1 - Math.abs(spread) * 0.5) * 0.7 + strain * 0.7;
@@ -669,7 +669,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
           if (twinkle > 0) {
             const spAlpha = twinkle * harmonyFactor * 0.85;
             const spSize = (2.2 + (j % 3) * 1.1) * (0.6 + 0.4 * twinkle);
-            const spColor = (j % 3 === 0) ? '#ffffff' : ((j % 3 === 1) ? '#ffe49e' : '#d8b4ff');
+            const spColor = (j % 3 === 0) ? '#ffffff' : ((j % 3 === 1) ? '#ffe49e' : '#c9b58a');
 
             ctx.save();
             ctx.fillStyle = spColor;
@@ -738,7 +738,7 @@ export function renderScene(ctx, time, modelOrFrame, { width = 900, height = 700
   if (time >= 19.5) {
     ctx.save();
     ctx.font = '11px "Segoe UI", Tahoma, sans-serif';
-    ctx.fillStyle = 'rgba(140, 220, 255, 0.85)';
+    ctx.fillStyle = 'rgba(184, 151, 90, 0.9)';
     ctx.textAlign = 'center';
     ctx.fillText('✦ تستدير الطاقة في أرجاء الوجود وتتجاذب لتبدأ التجمع من جديد ✦', 0, 142);
     ctx.restore();

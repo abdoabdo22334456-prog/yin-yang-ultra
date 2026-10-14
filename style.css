@@ -1,19 +1,19 @@
 /* style.css - تصميم الواجهة الفضائية الفائقة (Cosmic Cyber-Zen HUD) */
 :root {
   color-scheme: dark;
-  --bg-space: #05070f;
-  --bg-card: rgba(13, 17, 30, 0.75);
-  --bg-card-hover: rgba(22, 29, 48, 0.85);
-  --border-glass: rgba(130, 160, 220, 0.16);
-  --border-active: rgba(120, 180, 255, 0.45);
-  --text-main: #f0f4fc;
-  --text-muted: #8b9bb4;
-  --text-dim: #5c6a82;
-  --cyan: #4cc9f0;
-  --violet: #a370f7;
-  --gold: #ffbe0b;
-  --crimson: #ff3366;
-  --green: #06d6a0;
+  --bg-space: #0b0a09;
+  --bg-card: rgba(18, 15, 12, 0.75);
+  --bg-card-hover: rgba(30, 25, 19, 0.85);
+  --border-glass: rgba(236, 230, 216, 0.14);
+  --border-active: rgba(184, 151, 90, 0.45);
+  --text-main: #ece6d8;
+  --text-muted: #a39a86;
+  --text-dim: #6f6858;
+  --cyan: #ece6d8;
+  --violet: #b8975a;
+  --gold: #d4b06a;
+  --crimson: #a63d2f;
+  --green: #8a9a6b;
   --radius-lg: 20px;
   --radius-md: 12px;
   --radius-sm: 8px;
@@ -27,8 +27,8 @@ body {
   margin: 0;
   background-color: var(--bg-space);
   background-image: 
-    radial-gradient(circle at 15% 20%, rgba(90, 40, 160, 0.15), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(20, 70, 140, 0.15), transparent 45%);
+    radial-gradient(circle at 15% 20%, rgba(110, 85, 50, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(60, 50, 35, 0.16), transparent 45%);
   color: var(--text-main);
   font-family: "Segoe UI", "Cairo", Tahoma, Arial, sans-serif;
   font-size: 14px;
@@ -461,7 +461,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4cc9f0, #4361ee);
+  background: linear-gradient(135deg, #b8975a, #8a6d38);
   border-color: transparent;
   color: #fff;
   box-shadow: 0 4px 16px rgba(76, 201, 240, 0.3);
@@ -682,7 +682,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .strain-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--cyan) 0%, var(--green) 25%, var(--gold) 55%, #ff6633 75%, var(--crimson) 100%);
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--green) 25%, var(--gold) 55%, #c4663a 75%, var(--crimson) 100%);
   border-radius: 5px;
   transition: width 0.12s ease-out;
   box-shadow: 0 0 10px rgba(255, 51, 102, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -832,7 +832,7 @@ footer {
 }
 
 .mode-tab.active {
-  background: linear-gradient(135deg, rgba(76, 201, 240, 0.2), rgba(163, 112, 247, 0.25));
+  background: linear-gradient(135deg, rgba(184, 151, 90, 0.2), rgba(150, 120, 70, 0.25));
   border-color: var(--border-active);
   color: #fff;
   box-shadow: 0 0 16px rgba(76, 201, 240, 0.3);
@@ -1003,7 +1003,7 @@ footer {
 
 /* Rupture Alert Banner */
 .rupture-banner {
-  background: linear-gradient(135deg, rgba(255, 51, 102, 0.2), rgba(120, 20, 50, 0.4));
+  background: linear-gradient(135deg, rgba(166, 61, 47, 0.2), rgba(90, 25, 20, 0.4));
   border: 1px solid var(--crimson);
   border-radius: var(--radius-md);
   padding: 14px 20px;
@@ -1031,7 +1031,7 @@ footer {
 }
 
 .btn-restore {
-  background: linear-gradient(135deg, #06d6a0, #118ab2);
+  background: linear-gradient(135deg, #8a9a6b, #5f6b48);
   color: #fff;
   border: none;
   padding: 8px 18px;
@@ -1121,7 +1121,7 @@ footer {
 .harmony-gauge-fill {
   height: 100%;
   border-radius: 6px;
-  background: linear-gradient(90deg, #06d6a0, #4cc9f0, #a370f7);
+  background: linear-gradient(90deg, #8a9a6b, #ece6d8, #b8975a);
   transition: width 0.15s ease-out, background 0.3s;
   box-shadow: 0 0 12px rgba(6, 214, 160, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
@@ -1139,7 +1139,7 @@ footer {
 }
 
 .harmony-danger .harmony-gauge-fill {
-  background: linear-gradient(90deg, #ff3366, #ff6633, #ffbe0b);
+  background: linear-gradient(90deg, #a63d2f, #c4663a, #d4b06a);
   box-shadow: 0 0 12px rgba(255, 51, 102, 0.5);
 }
 
@@ -1149,11 +1149,11 @@ footer {
 }
 
 .yin-channel input[type=range]::-webkit-slider-thumb {
-  background: linear-gradient(135deg, #a370f7, #7c3aed);
+  background: linear-gradient(135deg, #b8975a, #8a6d38);
   box-shadow: 0 0 10px rgba(163, 112, 247, 0.5);
 }
 
 .yang-channel input[type=range]::-webkit-slider-thumb {
-  background: linear-gradient(135deg, #ffbe0b, #f59e0b);
+  background: linear-gradient(135deg, #d4b06a, #b8975a);
   box-shadow: 0 0 10px rgba(255, 190, 11, 0.5);
 }

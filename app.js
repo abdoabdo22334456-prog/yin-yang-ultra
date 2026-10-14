@@ -25,6 +25,17 @@ let lastExplosionTrigger = false;
 let cycleCount = 1; // عداد الدورات الكونية اللانهائية
 
 const mouse = { x: 0, y: 0, active: false };
+
+// اقتباسات كلاسيكية تم التحقق منها في طبعات عامة (ويكي مصدر الصينية)
+const QUOTES = {
+  gather: { zh: '一陰一陽之謂道', src: 'يي جينغ · 繫辭上' },
+  merge: { zh: '萬物負陰而抱陽', src: 'داو دي جينغ ٤٢' },
+  balance: { zh: '沖氣以為和', src: 'داو دي جينغ ٤٢' },
+  strain: { zh: '動極而靜', src: 'تشو دونيي · 太極圖說' },
+  turn: { zh: '反者道之動', src: 'داو دي جينغ ٤٠' },
+  return: { zh: '靜極復動', src: 'تشو دونيي · 太極圖說' }
+};
+const withQuote = (story, q) => `${story} «${q.zh}» — ${q.src}`;
 const media = matchMedia('(prefers-reduced-motion: reduce)');
 
 // تحديث الواجهة في نمط الدورة الكونية الأبدية
@@ -75,6 +86,14 @@ function updateCycleUI(f) {
       story = 'تتباطأ جزيئات الطاقة عند أقصى المدى، وتستدير بنعومة لتتجاذب من جديد نحو مدارات البذور المتجددة.';
     }
   }
+
+  const q = time < 6.0 ? QUOTES.gather
+    : time < FORMATION ? QUOTES.merge
+    : time < 11.5 ? QUOTES.balance
+    : time < EXPLODE_TIME ? QUOTES.strain
+    : time < 15.5 ? QUOTES.turn
+    : QUOTES.return;
+  story = withQuote(story, q);
 
   $('stamp').textContent = '00:' + String(Math.floor(time)).padStart(2, '0') + ' / 00:24';
   $('time-label').textContent = time.toFixed(1) + 's';
@@ -163,10 +182,22 @@ function updateSandboxUI(f) {
       phase = '⚠️ توتر هندسي واضطراب في الدوران';
       story = `اختلال ملحوظ في التكافؤ (${f.yin.toFixed(1)} مقابل ${f.yang.toFixed(1)})؛ إجهاد التماسك ارتفع إلى (${strainPct}%). الدوران يتباطأ وتظهر تموجات على الحواف.`;
     } else {
-      phase = '⚡ إجهاد حرج وخطر انفجار وشيك!';
-      story = `الإجهاد بلغ حداً حرجاً (${strainPct}%)! ارتعاشات كهربائية تهز المحيط الكوني، وأي زيادة طفيفة ستؤدي إلى الانفجار الفوري.`;
+      if (f.total > 30) {
+        phase = '⚡ إجهاد حرج وخطر انفجار وشيك!';
+        story = `الحمولة بلغت حداً حرجاً (${strainPct}%)! أي زيادة طفيفة ستؤدي إلى الانفجار الفوري.`;
+      } else {
+        phase = '⚡ غلوّ شديد يوشك أن ينقلب';
+        story = `الاختلال بلغ ذروته (${f.yin.toFixed(1)} مقابل ${f.yang.toFixed(1)}). إن بقي كذلك فسيبدأ بالتحوّل إلى نقيضه.`;
+      }
     }
   }
+
+  if (!f.ruptured && f.reversal > 0) {
+    phase = '☯ انقلاب: الغلوّ يتحوّل إلى نقيضه';
+    story = `الطرف الغالب يرقّ ويتحوّل ببطء إلى نقيضه (${f.yin.toFixed(1)} : ${f.yang.toFixed(1)}). لا انفجار هنا، بل عودة.`;
+  }
+  const sq = f.ruptured ? QUOTES.strain : (f.reversal > 0 ? QUOTES.turn : (f.strain < 0.15 ? QUOTES.balance : null));
+  if (sq) story = withQuote(story, sq);
 
   $('phase').textContent = phase;
   $('stage-number').textContent = '🎛';
@@ -180,7 +211,7 @@ function updateSandboxUI(f) {
   $('val-yang').textContent = f.yang.toFixed(1);
 
   // مزامنة السلايدر إذا كان التناغم التلقائي مفعلاً
-  if (sandboxState.autoHarmonize) {
+  if (sandboxState.autoHarmonize || f.reversal > 0) {
     $('slider-yin').value = f.yin;
     $('slider-yang').value = f.yang;
   }
